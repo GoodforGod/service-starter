@@ -4,9 +4,9 @@ package io.starter.service.controller.mapping;
  * "Default Description"
  *
  * @author GoodforGod
- * @since 10.09.2017
+ * @since 04.02.2018
  */
-public class WebMapper {
+public class WebMapper extends Mapper {
 
     public static final String SECURED = "/sec";
     public static final String HOME = SECURED + "/home";
@@ -16,8 +16,4 @@ public class WebMapper {
 
     public static final String SWAGGER_UI = "/swagger-ui.html";
     public static final String SWAGGER_DOC = "/swagger*";
-
-    public static String redirect(String value) {
-        return "redirect:" + value;
-    }
 }

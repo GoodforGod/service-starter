@@ -11,10 +11,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 /**
- * "default description"
+ * "Default Description"
  *
- * @author goodforgod
- * @since 10.09.2017
+ * @author GoodforGod
+ * @since 04.02.2018
  */
 @Configuration
 @EnableWebSecurity
@@ -22,10 +22,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String ADMIN = "ADMIN";
 
-    @Value("${itmo.center.uid:admin}")
+    @Value("${starter.web.uid:admin}")
     private String uid;
 
-    @Value("${itmo.center.pass:1234}")
+    @Value("${starter.web.password:1234}")
     private String password;
 
     @Override

@@ -8,7 +8,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  * "default comment"
  *
  * @author GoodforGod
- * @since 07.09.2017
+ * @since 04.02.2018
  */
 @SpringBootApplication
 @EnableScheduling

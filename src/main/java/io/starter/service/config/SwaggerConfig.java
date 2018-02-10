@@ -14,7 +14,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * "Default Description"
  *
  * @author GoodforGod
- * @since 10.09.2017
+ * @since 04.02.2018
  */
 @Configuration
 @EnableSwagger2

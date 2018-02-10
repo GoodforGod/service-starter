@@ -1,18 +1,13 @@
 package io.starter.service.controller.mapping;
 
 /**
- * "default comment"
+ * "Default Description"
  *
  * @author GoodforGod
- * @since 11.09.2017
+ * @since 04.02.2018
  */
-public class TemplateMapper {
-    public static final String CONFIG_API = "api-config";
-    public static final String CONFIG_BETA = "beta-config";
-    public static final String INTERVALS = "interval-config";
+public class TemplateMapper extends Mapper {
 
-    public static final String FEEDBACK = "feedback";
-    public static final String NEWS = "news";
-
+    public static final String HOME = "home";
     public static final String LOGIN = "login";
 }
