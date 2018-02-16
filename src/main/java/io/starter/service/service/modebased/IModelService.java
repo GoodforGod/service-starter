@@ -13,14 +13,15 @@ import java.util.List;
  */
 public interface IModelService<T, ID extends Serializable> {
     OptionalData<Boolean> exist(ID id);
+    OptionalData<Boolean> exist(T t);
 
     OptionalData<T> find(ID id);
 
     OptionalData<List<T>> findAll();
 
     OptionalData<T> save(T t);
-    OptionalData<List<T>> save(List<T> t);
+    OptionalData<List<T>> save(Iterable<T> t);
 
-    OptionalData<Boolean> delete(T t);
-    OptionalData<Boolean> deleteById(ID id);
+    OptionalData<Boolean> remove(ID id);
+    OptionalData<Boolean> remove(T t);
 }
