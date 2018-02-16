@@ -14,7 +14,7 @@ public class CacheContainer<T> {
     private final LocalDateTime created;
     private final T data;
 
-    public CacheContainer(T data) {
+    private CacheContainer(T data) {
         this.data = data;
         this.created = LocalDateTime.now();
     }
@@ -29,11 +29,19 @@ public class CacheContainer<T> {
         return data;
     }
 
+    public boolean haveData() {
+        return (data != null);
+    }
+
     public LocalDateTime getCreated() {
         return created;
     }
 
-
+    public static <T> T retrieve(CacheContainer<T> container) {
+        return (container != null)
+                ? container.getData()
+                : null;
+    }
 
     public long aliveWithinDays(LocalDateTime dateTime) {
         return LocalDateTime.from(created).until(dateTime, ChronoUnit.DAYS);

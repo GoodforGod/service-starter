@@ -7,8 +7,11 @@ import io.starter.service.service.modebased.ICachedModelService;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static io.starter.service.model.CacheContainer.retrieve;
 
 /**
  * "Default Description"
@@ -46,7 +49,7 @@ abstract class BasicMongoCachedService<T extends BasicMongoModel<ID>, ID extends
         if (isIdNotValid(id))
             return OptionalData.empty();
 
-        final T t = retrieveFromContainer(cache.get(id));
+        final T t = retrieve(cache.get(id));
         return (t != null)
                 ? OptionalData.of(t)
                 : super.find(id);
@@ -54,7 +57,21 @@ abstract class BasicMongoCachedService<T extends BasicMongoModel<ID>, ID extends
 
     @Override
     public OptionalData<T> save(T t) {
-        return super.save(storeInCache(t));
+        final OptionalData<T> superData = super.save(t);
+
+        return (superData.isPresent())
+                ? OptionalData.of(cache(t))
+                : superData;
+    }
+
+    @Override
+    public OptionalData<List<T>> save(Iterable<T> t) {
+        final OptionalData<List<T>> superData = super.save(t);
+
+        if (superData.isPresent())
+            t.forEach(this::cache);
+
+        return superData;
     }
 
     @Override
@@ -62,36 +79,32 @@ abstract class BasicMongoCachedService<T extends BasicMongoModel<ID>, ID extends
         if (isIdNotValid(id))
             return OptionalData.empty();
 
-        cache.remove(id);
+        removeCached(id);
         return super.remove(id);
     }
 
-    T storeInCache(OptionalData<T> data) {
-        return storeInCache(data.orElse(null));
+    @Override
+    public OptionalData<Boolean> remove(T t) {
+        return remove(t.getId());
     }
 
-    T storeInCache(T data) {
+
+    private T cache(T data) {
         if (isNotValid(data))
             return null;
 
-        cache.put(data.getId(), new CacheContainer<>(data));
+        cache.put(data.getId(), CacheContainer.of(data));
         return data;
-    }
-
-    T retrieveFromContainer(CacheContainer<T> container) {
-        return (container != null)
-                ? container.getData()
-                : null;
     }
 
     @Override
     public OptionalData<T> getCached(ID id) {
-        return OptionalData.ofNullable(retrieveFromContainer(cache.get(id)));
+        return OptionalData.ofNullable(retrieve(cache.get(id)));
     }
 
     @Override
     public OptionalData<T> removeCached(ID id) {
-        return OptionalData.ofNullable(retrieveFromContainer(cache.remove(id)));
+        return OptionalData.ofNullable(retrieve(cache.remove(id)));
     }
 
     public abstract void cleanup();
