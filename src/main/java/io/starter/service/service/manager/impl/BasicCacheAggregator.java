@@ -2,7 +2,7 @@ package io.starter.service.service.manager.impl;
 
 import io.starter.service.model.CacheContainer;
 import io.starter.service.model.OptionalData;
-import io.starter.service.service.manager.IModelCacheManager;
+import io.starter.service.service.manager.ICacheAggregator;
 import io.starter.service.util.BasicServiceUtils;
 
 import java.io.Serializable;
@@ -20,24 +20,24 @@ import static io.starter.service.model.CacheContainer.retrieve;
  * @author GoodforGod
  * @since 16.02.2018
  */
-abstract class BasicModelCacheManager<T, ID extends Serializable>
+abstract class BasicCacheAggregator<T, ID extends Serializable>
         extends BasicServiceUtils<T, ID>
-        implements IModelCacheManager<T, ID> {
+        implements ICacheAggregator<T, ID> {
 
     final Map<ID, CacheContainer<T>> cache;
 
-    BasicModelCacheManager() {
+    BasicCacheAggregator() {
         this(false);
     }
 
-    BasicModelCacheManager(boolean isConcurrent) {
+    BasicCacheAggregator(boolean isConcurrent) {
         this.cache = (isConcurrent)
                 ? new ConcurrentHashMap<>()
                 : new HashMap<>();
     }
 
     @Override
-    public OptionalData<Boolean> exist(ID id) {
+    public OptionalData<Boolean> contains(ID id) {
         if(isIdNotValid(id))
             return OptionalData.empty();
 
@@ -47,7 +47,7 @@ abstract class BasicModelCacheManager<T, ID extends Serializable>
     }
 
     @Override
-    public OptionalData<Boolean> exist(T t) {
+    public OptionalData<Boolean> contains(T t) {
         if(isNotValid(t))
             return OptionalData.empty();
 
@@ -58,14 +58,19 @@ abstract class BasicModelCacheManager<T, ID extends Serializable>
     }
 
     @Override
-    public OptionalData<T> find(ID id) {
+    public boolean isCacheEmpty() {
+        return cache.isEmpty();
+    }
+
+    @Override
+    public OptionalData<T> get(ID id) {
         return (isIdNotValid(id))
             ? OptionalData.empty()
                 : OptionalData.ofNullable(retrieve(cache.get(id)));
     }
 
     @Override
-    public OptionalData<List<T>> findAll() {
+    public OptionalData<List<T>> getAll() {
         return OptionalData.ofNullable(
                 cache.entrySet().stream()
                         .map(e -> retrieve(e.getValue()))
@@ -74,7 +79,7 @@ abstract class BasicModelCacheManager<T, ID extends Serializable>
     }
 
     @Override
-    public OptionalData<T> save(ID id, T t) {
+    public OptionalData<T> store(ID id, T t) {
         if(isNotValid(t) || isIdNotValid(id))
             return OptionalData.empty();
 
@@ -101,4 +106,6 @@ abstract class BasicModelCacheManager<T, ID extends Serializable>
 
         return remove(id);
     }
+
+    public abstract void cleanup();
 }

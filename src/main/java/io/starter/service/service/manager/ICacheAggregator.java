@@ -11,15 +11,17 @@ import java.util.List;
  * @author GoodforGod
  * @since 16.02.2018
  */
-public interface IModelCacheManager<T, ID extends Serializable> {
-    OptionalData<Boolean> exist(ID id);
-    OptionalData<Boolean> exist(T t);
+public interface ICacheAggregator<T, ID extends Serializable> {
+    OptionalData<Boolean> contains(ID id);
+    OptionalData<Boolean> contains(T t);
 
-    OptionalData<T> find(ID id);
+    boolean isCacheEmpty();
 
-    OptionalData<List<T>> findAll();
+    OptionalData<T> get(ID id);
 
-    OptionalData<T> save(ID id, T t);
+    OptionalData<List<T>> getAll();
+
+    OptionalData<T> store(ID id, T t);
 
     OptionalData<Boolean> remove(ID id);
     OptionalData<Boolean> remove(T t);
