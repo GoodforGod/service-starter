@@ -1,7 +1,7 @@
-package io.starter.service.service.modebased.impl;
+package io.starter.service.service.database.impl;
 
 import io.starter.service.model.OptionalData;
-import io.starter.service.service.modebased.IModelService;
+import io.starter.service.service.database.IModelService;
 import io.starter.service.util.BasicServiceUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +20,7 @@ abstract class BasicMongoService<T, ID extends Serializable>
         extends BasicServiceUtils<T, ID>
         implements IModelService<T, ID> {
 
-    final Logger logger = LoggerFactory.getLogger(BasicMongoService.class);
+    static final Logger logger = LoggerFactory.getLogger(BasicMongoService.class);
 
     final MongoRepository<T, ID> repository;
 

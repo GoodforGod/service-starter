@@ -1,4 +1,4 @@
-package io.starter.service.service.modebased;
+package io.starter.service.service.manager;
 
 import io.starter.service.model.OptionalData;
 
@@ -11,7 +11,7 @@ import java.util.List;
  * @author GoodforGod
  * @since 16.02.2018
  */
-public interface IModelService<T, ID extends Serializable> {
+public interface IModelCacheManager<T, ID extends Serializable> {
     OptionalData<Boolean> exist(ID id);
     OptionalData<Boolean> exist(T t);
 
@@ -19,8 +19,7 @@ public interface IModelService<T, ID extends Serializable> {
 
     OptionalData<List<T>> findAll();
 
-    OptionalData<T> save(T t);
-    OptionalData<List<T>> save(Iterable<T> t);
+    OptionalData<T> save(ID id, T t);
 
     OptionalData<Boolean> remove(ID id);
     OptionalData<Boolean> remove(T t);

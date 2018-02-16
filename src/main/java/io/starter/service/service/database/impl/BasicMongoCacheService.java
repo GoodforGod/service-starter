@@ -1,9 +1,9 @@
-package io.starter.service.service.modebased.impl;
+package io.starter.service.service.database.impl;
 
 import io.starter.service.model.CacheContainer;
 import io.starter.service.model.OptionalData;
 import io.starter.service.model.dao.BasicMongoModel;
-import io.starter.service.service.modebased.ICachedModelService;
+import io.starter.service.service.database.IModelCacheService;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.io.Serializable;
@@ -19,13 +19,13 @@ import static io.starter.service.model.CacheContainer.retrieve;
  * @author GoodforGod
  * @since 16.02.2018
  */
-abstract class BasicMongoCachedService<T extends BasicMongoModel<ID>, ID extends Serializable>
+abstract class BasicMongoCacheService<T extends BasicMongoModel<ID>, ID extends Serializable>
         extends BasicMongoService<T, ID>
-        implements ICachedModelService<T, ID> {
+        implements IModelCacheService<T, ID> {
 
     final Map<ID, CacheContainer<T>> cache = new ConcurrentHashMap<>();
 
-    BasicMongoCachedService(MongoRepository<T, ID> repository) {
+    BasicMongoCacheService(MongoRepository<T, ID> repository) {
         super(repository);
     }
 
