@@ -7,6 +7,7 @@ import io.starter.service.service.database.IModelCacheService;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -23,10 +24,17 @@ abstract class BasicMongoCacheService<T extends BasicMongoModel<ID>, ID extends 
         extends BasicMongoService<T, ID>
         implements IModelCacheService<T, ID> {
 
-    final Map<ID, CacheContainer<T>> cache = new ConcurrentHashMap<>();
+    final Map<ID, CacheContainer<T>> cache;
 
     BasicMongoCacheService(MongoRepository<T, ID> repository) {
+        this(repository, false);
+    }
+
+    BasicMongoCacheService(MongoRepository<T, ID> repository, boolean isConcurrent) {
         super(repository);
+        this.cache = (isConcurrent)
+                ? new ConcurrentHashMap<>()
+                : new HashMap<>();
     }
 
     @Override

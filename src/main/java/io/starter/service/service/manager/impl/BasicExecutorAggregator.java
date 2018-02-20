@@ -17,7 +17,7 @@ abstract class BasicExecutorAggregator<T, ID extends Serializable>
         extends BasicCacheAggregator<T, ID>
         implements ICacheAggregator<T, ID> {
 
-    private final IExecutor<T> executor;
+    final IExecutor<T> executor;
 
     BasicExecutorAggregator(IExecutor<T> executor) {
         super();
