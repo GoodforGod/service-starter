@@ -38,7 +38,7 @@ abstract class BasicCacheAggregator<T, ID extends Serializable>
 
     @Override
     public OptionalData<Boolean> contains(ID id) {
-        if(isIdNotValid(id))
+        if (isIdNotValid(id))
             return OptionalData.empty();
 
         return (cache.containsKey(id))
@@ -47,8 +47,13 @@ abstract class BasicCacheAggregator<T, ID extends Serializable>
     }
 
     @Override
+    public OptionalData<Boolean> containsCached(ID id) {
+        return contains(id);
+    }
+
+    @Override
     public OptionalData<Boolean> contains(T t) {
-        if(isNotValid(t))
+        if (isNotValid(t))
             return OptionalData.empty();
 
         return OptionalData.ofNullable(
@@ -65,8 +70,13 @@ abstract class BasicCacheAggregator<T, ID extends Serializable>
     @Override
     public OptionalData<T> get(ID id) {
         return (isIdNotValid(id))
-            ? OptionalData.empty()
+                ? OptionalData.empty()
                 : OptionalData.ofNullable(retrieve(cache.get(id)));
+    }
+
+    @Override
+    public OptionalData<T> getCached(ID id) {
+        return get(id);
     }
 
     @Override
@@ -79,8 +89,13 @@ abstract class BasicCacheAggregator<T, ID extends Serializable>
     }
 
     @Override
+    public OptionalData<List<T>> getAllCached() {
+        return getAll();
+    }
+
+    @Override
     public OptionalData<T> store(ID id, T t) {
-        if(isNotValid(t) || isIdNotValid(id))
+        if (isNotValid(t) || isIdNotValid(id))
             return OptionalData.empty();
 
         cache.put(id, CacheContainer.of(t));
@@ -88,8 +103,8 @@ abstract class BasicCacheAggregator<T, ID extends Serializable>
     }
 
     @Override
-    public OptionalData<Boolean> remove(ID id) {
-        if(isIdNotValid(id))
+    public OptionalData<Boolean> removeCached(ID id) {
+        if (isIdNotValid(id))
             return OptionalData.empty();
 
         return (cache.remove(id) != null)
@@ -98,13 +113,13 @@ abstract class BasicCacheAggregator<T, ID extends Serializable>
     }
 
     @Override
-    public OptionalData<Boolean> remove(T t) {
+    public OptionalData<Boolean> removeCached(T t) {
         final ID id = cache.entrySet().stream()
                 .filter(e -> e.getValue().equals(t))
                 .map(Map.Entry::getKey)
                 .findFirst().orElse(null);
 
-        return remove(id);
+        return removeCached(id);
     }
 
     public abstract void cleanup();
