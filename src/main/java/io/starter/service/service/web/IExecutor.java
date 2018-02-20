@@ -2,6 +2,8 @@ package io.starter.service.service.web;
 
 import io.starter.service.model.OptionalData;
 
+import java.util.List;
+
 /**
  * "Default Description"
  *
@@ -10,5 +12,7 @@ import io.starter.service.model.OptionalData;
  */
 public interface IExecutor<T> {
 
-    OptionalData<T> execute(String url, String data);
+    OptionalData<T> process(Object ... objects);
+
+    OptionalData<List<T>> processAll(Object ... objects);
 }
