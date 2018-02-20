@@ -17,12 +17,20 @@ public abstract class BasicCollectionUtils {
         return (collection == null || collection.isEmpty());
     }
 
+    public static boolean isEmpty(Iterable iterable) {
+        return (iterable == null || !iterable.iterator().hasNext());
+    }
+
     public static boolean isEmpty(Map map) {
         return (map == null || map.isEmpty());
     }
 
     public static boolean isNonEmpty(Collection collection) {
         return !isEmpty(collection);
+    }
+
+    public static boolean isNonEmpty(Iterable iterable) {
+        return !isEmpty(iterable);
     }
 
     public static boolean isNonEmpty(Map map) {

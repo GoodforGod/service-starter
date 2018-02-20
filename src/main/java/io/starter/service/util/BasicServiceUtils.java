@@ -1,14 +1,12 @@
 package io.starter.service.util;
 
-import java.util.List;
-
 /**
  * "Default Description"
  *
  * @author GoodforGod
  * @since 10.02.2018
  */
-public abstract class BasicServiceUtils <T, ID> {
+public abstract class BasicServiceUtils<T, ID> {
 
     protected boolean isIdValid(ID id) {
         return !isIdNotValid(id);
@@ -26,11 +24,11 @@ public abstract class BasicServiceUtils <T, ID> {
         return (t == null);
     }
 
-    protected boolean isValid(List<T> ts) {
+    protected boolean isValid(Iterable<T> ts) {
         return !isNotValid(ts);
     }
 
-    protected boolean isNotValid(List<T> ts) {
+    protected boolean isNotValid(Iterable<T> ts) {
         return (BasicCollectionUtils.isEmpty(ts));
     }
 }

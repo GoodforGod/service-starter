@@ -11,22 +11,32 @@ public class Response<T> {
     private final boolean isSuccessful;
     private final T data;
 
+    Response(boolean isSuccessful, T data) {
+        this.isSuccessful = isSuccessful;
+        this.data = data;
+    }
+
+
+
     public static <T> Response<T> successful() {
-        return new Response<>(true, null);
+        return successful(null);
     }
 
     public static <T> Response<T> successful(T data) {
         return new Response<>(true, data);
     }
 
+    public static <T> Response<T> successfulNotNull(T data) {
+        return (data == null)
+                ? failed()
+                : successful(data);
+    }
+
     public static <T> Response<T> failed() {
         return new Response<>(false, null);
     }
 
-    Response(boolean isSuccessful, T data) {
-        this.isSuccessful = isSuccessful;
-        this.data = data;
-    }
+
 
     public boolean isSuccessful() {
         return isSuccessful;
@@ -36,6 +46,12 @@ public class Response<T> {
         return !isSuccessful;
     }
 
+    public T getData() {
+        return data;
+    }
+
+
+
     public static <T> boolean isSuccessful(Response<T> response) {
         return (response != null && response.isSuccessful);
     }
@@ -44,7 +60,4 @@ public class Response<T> {
         return !isSuccessful(response);
     }
 
-    public T getData() {
-        return data;
-    }
 }
